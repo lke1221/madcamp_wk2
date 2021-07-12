@@ -1,5 +1,6 @@
 import React, { Component, useState } from 'react';
-import { ImageBackground, View, Text, StyleSheet, TouchableOpacity, TextInput, Platform } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const API_URL = 'http://192.249.18.106:80';
@@ -9,6 +10,7 @@ const AuthScreen = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [name, setName] = useState('');
     const [password, setPassword] = useState('');
+    //const [money, setMoney] = useState(0);
 
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
@@ -32,6 +34,7 @@ const AuthScreen = ({navigation}) => {
                 const jsonRes = await res.json();
                 if (res.status === 200) {
                     setMessage(jsonRes.message);
+                    AsyncStorage.setItem('user_id', email);
                     navigation.replace('TabNavigator');
                 }
             } catch (err) {
@@ -48,6 +51,7 @@ const AuthScreen = ({navigation}) => {
             email : email,
             name : name,
             password : password,
+            //moeny : money,
         };
         fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
             method: 'POST',
@@ -89,6 +93,7 @@ const AuthScreen = ({navigation}) => {
                     <TextInput style={styles.input} placeholder="Email" autoCapitalize="none" onChangeText={setEmail}></TextInput>
                     {!isLogin && <TextInput style={styles.input} placeholder="Name" onChangeText={setName}></TextInput>}
                     <TextInput secureTextEntry={true} style={styles.input} placeholder="Password" onChangeText={setPassword}></TextInput>
+                    {/*<TextInput style={styles.input} onChangeText={setMoney} placeholder="Money" keyboardType="numeric"/>*/}
                     <Text style={[styles.message, {color: isError ? 'red' : 'green'}]}>{message ? getMessage() : null}</Text>
                     <TouchableOpacity style={styles.button} onPress={onSubmitHandler}>
                         <Text style={styles.buttonText}>Done</Text>

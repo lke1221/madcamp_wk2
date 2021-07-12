@@ -6,6 +6,7 @@ import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
 
 import AuthScreen from './AuthScreen';
+import AddAuction from './AddAuction';
 import HomeScreen from "./HomeScreen";
 import SettingScreen from "./SettingScreen";
 import SomethingScreen from "./SomethingScreen";
@@ -13,6 +14,7 @@ import SomethingScreen from "./SomethingScreen";
 const HomeStack = createStackNavigator(
   {
     HomeScreen,
+    AddAuction,
   },
   // if you need.
   // recommend custom header

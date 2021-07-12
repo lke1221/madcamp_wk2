@@ -41,6 +41,11 @@ export default class SettingScreen extends Component{
                 <TouchableOpacity 
                     style={styles.wrapButton}
                     onPress={this._navigate.bind(this)}>
+                    <Text>🤗 My profile</Text>
+                </TouchableOpacity>
+                <TouchableOpacity 
+                    style={styles.wrapButton}
+                    onPress={this._navigate.bind(this)}>
                     <Text>🏅 Something</Text>
                 </TouchableOpacity>
                 <TouchableOpacity 
