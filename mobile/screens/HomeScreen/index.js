@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     },
     goods: {
         marginTop:16, 
-        padding: 10,
+        //padding: 10,
         fontSize: 18,
         borderWidth: 0.25,
         borderColor: "#000"
