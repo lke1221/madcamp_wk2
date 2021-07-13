@@ -286,7 +286,8 @@ router.post('/img', upload.single('img'), (req, res) => {
 `userId` : 유저 - 경매 정보 간 연결  
 `goodId`: 상품 - 경매 정보 간 연결
   
-<img width="500" alt="Screen Shot 2021-07-13 at 11 50 06 PM" src="https://user-images.githubusercontent.com/46164736/125473829-bb95fcd2-c0d9-470f-a534-3bc2580bcb82.png">
+<img width="900" alt="Screen Shot 2021-07-13 at 11 56 16 PM" src="https://user-images.githubusercontent.com/46164736/125474745-938e56a6-a9f9-4c20-8ec7-83a7010e4019.png">
+
 
 
 
