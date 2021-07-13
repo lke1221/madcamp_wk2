@@ -10,11 +10,14 @@ import AddAuction from './AddAuction';
 import HomeScreen from "./HomeScreen";
 import SettingScreen from "./SettingScreen";
 import SomethingScreen from "./SomethingScreen";
+import ProfileScreen from "./ProfileScreen";
+import DetailScreen from "./DetailScreen";
 
 const HomeStack = createStackNavigator(
   {
     HomeScreen,
     AddAuction,
+    DetailScreen
   },
   // if you need.
   // recommend custom header
@@ -29,6 +32,7 @@ const SettingStack = createStackNavigator(
   {
     SettingScreen,
     SomethingScreen,
+    ProfileScreen
   },
   {
     defaultNavigationOptions: ({ navigation }) => ({

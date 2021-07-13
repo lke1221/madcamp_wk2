@@ -49,7 +49,7 @@ const AuthScreen = ({navigation}) => {
     const onSubmitHandler = () => {
         const payload = {
             email : email,
-            name : name,
+            nick : name,
             password : password,
             //moeny : money,
         };

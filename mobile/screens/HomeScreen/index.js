@@ -7,6 +7,7 @@ import {
     StyleSheet,
     Button,
     Platform,
+    TouchableOpacity,
     TextInput
 } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -31,19 +32,21 @@ const createFormData = (photo, body = {}) => {
 
 export default class HomeScreen extends Component{
 
-    _navigate(){
-        this.props.navigation.navigate('AddAuction');
+    _navigateAdd(){
+        this.props.navigation.push('AddAuction');
+    }
+
+    _navigateDetails(pname, price){
+        this.props.navigation.navigate({routeName: 'DetailScreen', params : {pname:pname, price:price}});
     }
 
     constructor(){
         super();
         this.state={
             user_id : '',
-            user_name : '',
             text: '',
             profiles:[],
             goods:[],
-            user_money : 0,
             photo : null
         }
     };
@@ -89,18 +92,20 @@ export default class HomeScreen extends Component{
             <ScrollView style={styles.container}>
                 {
                     this.state.profiles.map((item, index)=> {
-                        return ((item.email==this.state.user_id)&&<Text style={styles.text}>안녕하세요 {item.name}님!{"\n"}
+                        return ((item.email==this.state.user_id)&&<Text style={styles.intro}>안녕하세요 {item.nick}님!{"\n"}
                         잔액은 {item.money}원 입니다</Text>)
                     })
                 }
-                <Button title="경매 추가하기" onPress={this._navigate.bind(this)}/>
+                <TouchableOpacity style={styles.buttonAlt} onPress={this._navigateAdd.bind(this)}>
+                        <Text style={styles.buttonAltText}>경매 추가하기</Text>
+                </TouchableOpacity>
                 <View style={styles.goods}>
                 {
                     this.state.goods.map((item, index)=>{
-                        return <View key={index} style={styles.item}>
-                                    <Text> 품목 : {item.name} </Text>
-                                    <Text> 최초 가격 : {item.price} </Text>
-                        </View>
+                        return <TouchableOpacity key={index} style={styles.items} onPress={this._navigateDetails.bind(this, item.name, item.price)}>
+                                    <Text style={styles.item}> 품목 : {item.name} </Text>
+                                    <Text style={styles.item}> 최초 가격 : {item.price} </Text>
+                        </TouchableOpacity>
                     })
                 }
                 </View>
@@ -117,48 +122,18 @@ const styles = StyleSheet.create({
         padding: wp('5%'),
         backgroundColor: 'white',
     },
-    wrapContent: {
-        width: wp('90%'),
-        height: wp('90%'),
-        paddingBottom: wp('5%'),
-        
-    },
-    content: {
-        width: "100%",
-        height: "100%",
-        backgroundColor: "#46c3ad",
-    },
     scroll:{
         marginTop:16, 
         backgroundColor:'gray',
-    },
-    text: {
-        padding:4, 
-        color:"black",
-        fontSize:20
     }, 
-    item: {
+    items: {
         padding: 10,
-        fontSize: 18,
-        //height: 44,
         borderWidth: 0.25,
         borderColor: "#000",
-        //flexDirection:'row'
     },
-    inputs: {
-        width: '100%',
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        //paddingTop: '10%',
-    }, 
-    input: {
-        width: '80%',
-        borderBottomWidth: 1,
-        borderBottomColor: 'black',
-        paddingTop: 10,
-        fontSize: 16, 
-        minHeight: 40,
+    item: {
+        padding: 2,
+        fontSize: 18,
     },
     goods: {
         marginTop:16, 
@@ -166,5 +141,27 @@ const styles = StyleSheet.create({
         fontSize: 18,
         borderWidth: 0.25,
         borderColor: "#000"
-      },
+    },
+    intro: {
+        padding:4, 
+        color:"black",
+        fontSize:20,
+        marginBottom:16
+    },
+    buttonAlt: {
+        width: '100%',
+        borderWidth: 1,
+        height: 50,
+        borderRadius: 50,
+        borderColor: 'black',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 5,
+        backgroundColor : '#023e71'
+    },
+    buttonAltText: {
+        color: 'white',
+        fontSize: 20,
+        fontWeight: '400',
+    },
 })
