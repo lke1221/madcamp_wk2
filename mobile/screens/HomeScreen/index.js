@@ -92,7 +92,7 @@ export default class HomeScreen extends Component{
             <ScrollView style={styles.container}>
                 {
                     this.state.profiles.map((item, index)=> {
-                        return ((item.email==this.state.user_id)&&<Text style={styles.intro}>안녕하세요 {item.nick}님!{"\n"}
+                        return ((item.email==this.state.user_id)&&(AsyncStorage.setItem('user_num', item.id))&&<Text style={styles.intro}>안녕하세요 {item.nick}님!{"\n"}
                         잔액은 {item.money}원 입니다</Text>)
                     })
                 }

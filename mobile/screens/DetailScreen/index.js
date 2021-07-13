@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-community/async-storage';
 import React, {Component} from 'react';
 import {
     View,
@@ -13,7 +14,9 @@ export default class DetailScreen extends Component{
         super();
         this.state={
             bid:0,
-            msg:''
+            msg:'',
+            goods:[],
+            pid:0
         }
         this.sendData=this.sendData.bind(this);
     };
@@ -24,9 +27,34 @@ export default class DetailScreen extends Component{
         };
     };
 
+    componentDidMount(){
+        fetch('http://192.249.18.106:80/goods')
+        .then(response=>response.json())
+        .then(responseJson => this.setState({goods : responseJson}))
+        .catch(err =>alert(err));
+
+        this.state.goods.map((item, index)=> {
+            if(item.name==navigation.getParam('pname')){
+                this.setState({pid:parseInt(item.id.toString())})
+            }
+        })
+    }
+
     sendData(){
-        //() => this.props.navigation.pop()
-        fetch('http://192.249.18.106:80/goods/1/bid', {
+        //() => this.props.navigation.pop()        
+        /*fetch('http://192.249.18.106:80/goods')
+        .then(response=>response.json())
+        .then(responseJson => this.setState({goods : responseJson}))
+        .catch(err =>alert(err));
+
+
+        this.state.goods.map((item, index)=> {
+            if(item.name==navigation.getParam('pname')){
+                let pid  = item.id
+            }
+        })*/
+
+        fetch('http://192.249.18.106:80/goods/${this.state.pid}/bid', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -59,6 +87,7 @@ export default class DetailScreen extends Component{
             <View style={styles.container}>
                 <Text style={styles.pname}>{navigation.getParam('pname')}</Text>
                 <Text style={styles.price}>시작 가격: {navigation.getParam('price')}</Text>
+                <Text>{this.state.pid}</Text>
                 <TextInput style={styles.input} placeholder="입찰가격" autoCapitalize="none" onChangeText={(bid)=>this.setState({bid:bid})}></TextInput>
                 <TextInput style={styles.input} placeholder="메시지" autoCapitalize="none" onChangeText={(msg)=>this.setState({msg:msg})}></TextInput>
                 <TouchableOpacity style={styles.buttonAlt} onPress={this.sendData}>

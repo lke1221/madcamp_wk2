@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import {View, Text, StyleSheet, TouchableOpacity, TextInput, Platform, Button } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 
@@ -77,6 +78,7 @@ const AddAuction = (props) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+                ownerId : AsyncStorage.getItem('user_num'),
                 name : pname,
                 price : price
             }),

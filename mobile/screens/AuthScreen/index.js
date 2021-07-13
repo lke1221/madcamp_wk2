@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput, Platform } from 'react-native';
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
-const API_URL = 'http://192.249.18.106:80';
+const API_URL = 'http://192.249.18.106:80/auth';
 
 const AuthScreen = ({navigation}) => {
 

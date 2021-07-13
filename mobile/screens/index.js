@@ -12,6 +12,7 @@ import SettingScreen from "./SettingScreen";
 import SomethingScreen from "./SomethingScreen";
 import ProfileScreen from "./ProfileScreen";
 import DetailScreen from "./DetailScreen";
+import SplashScreen from "./SplashScreen";
 
 const HomeStack = createStackNavigator(
   {
@@ -77,6 +78,13 @@ const TabNavigator = createBottomTabNavigator(
 );
 
 const AppStack = createStackNavigator({
+    SplashScreen:{
+      screen:SplashScreen,
+      navigationOptions: ({navigation}) => ({
+        headerShown: false,
+        //title: "Authentification",
+      })
+    },
     AuthScreen: {
         screen: AuthScreen,
         navigationOptions: ({navigation}) => ({
