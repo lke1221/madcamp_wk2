@@ -22,6 +22,8 @@
 (6) **node-schedule**을 이용하여 **경매 시작 시간과 종료 시간**을 조율할 수 있고  
 (7) 낙찰 여부를 확정, 개인의 프로필에서 **낙찰 목록**을 열람할 수 있다. 
 
+## Server
+
 ### Models 
 1. Users: 사용자 모델
  
@@ -88,7 +90,7 @@ router.post('/login', (req, res, next) => {
 ```
 2. index: **프런트엔드**의 스크린을 위해 지정된 경로 작성  
 
-`/goods` - **상품 모델**, 경매에 올릴 물건의 
+`/goods` - **상품 모델**, 경매에 올릴 물건의 정보를 프런트로부터 받아 DB에 기록한다.
 ```js
 router.post('/goods', upload.single('img'), async (req, res, next) => {
   try {
@@ -100,7 +102,7 @@ router.post('/goods', upload.single('img'), async (req, res, next) => {
       price,
   ...
 ```  
-`/
+`/goods/:id/bid` - **경매 모델**, 입찰 정보를 프런트로부터 받아 DB에 기록하고, 조건에 맞지 않은 부분은 걸러낸다.
 
 ```js
 router.post('/goods/:id/bid', async (req, res, next) => {
@@ -135,8 +137,88 @@ router.post('/goods/:id/bid', async (req, res, next) => {
 });
 ```
 ### App.js
+DB의 정보를 서버를 통해 클라이언트에 전달할 수 있도록, 다양한 경로를 설정하였다.
+```js
+app.use((_, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+```
 
-[relationship graph]
+## Front
+
+### HomeScreen.js  
+`goods.db`에서 json형식으로 내용을 불러와서 화면에 띄우는 부분이다.  
+`TouchableOpacity` 속성을 부여하여 눌렀을 때 **DetailScreen**으로 이동하도록 한다.
+
+
+```js
+                    this.state.goods.map((item, index)=>{
+                        return <TouchableOpacity key={index} style={styles.items} onPress={this._navigateDetails.bind(this, item.name, item.price)}>
+                                    <Text style={styles.item}> 품목 : {item.name} </Text>
+                                    <Text style={styles.item}> 최초 가격 : {item.price} </Text>
+                        </TouchableOpacity>
+                    })
+```  
+
+`componentDidMount`는 화면이 처음 mount될 때 실행된다.  
+`fetch` 는 method를 생략할 경우 `GET`이 디폴트값인데, 정보를 가져온다. 정보를 올리는 것은 `POST`이다.
+```js
+    componentDidMount(){
+        fetch('http://192.249.18.106:80/goods')
+        .then(response=>response.json())
+        .then(responseJson => this.setState({goods : responseJson}))
+        .catch(err =>alert(err));
+    }
+```
+
+### AddAuction.js  
+서버에 정보를 올리는 부분이다.  
+**'경매 추가하기'** 버튼을 누르면 실행되는 함수로, 품목과 최초 가격을 서버에 전송한다.
+```js
+    const sendData = () => {
+        //() => this.props.navigation.pop()
+        fetch('http://192.249.18.106:80/goods', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ownerId : AsyncStorage.getItem('user_num'),
+                name : pname,
+                price : price
+            }),
+        })
+        .then(async res => { 
+            try {
+                const jsonRes = await res.json();
+                if (res.status !== 200) {
+                    console.log("failed");
+                } else {
+                    console.log("success");
+                }
+     ...
+```
+### AuthScreen.js  
+Login 버튼과 Signup 버튼이 번갈아서 보이는 부분의 코드이다.
+
+```js
+        fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        })
+```
+로그인 화면이면 이름을 등록하지 않는 `textinput`이 보이지 않고,  
+ 로그인 화면이 아닐 경우 (= 회원가입 화면일 경우) `textinput`이 보인다.
+
+```js
+{!isLogin && <TextInput style={styles.input} placeholder="Name" onChangeText={setName}></TextInput>}
+```
 
 ## 난관에 봉착했다.
 
@@ -205,6 +287,7 @@ router.post('/img', upload.single('img'), (req, res) => {
 `userId` : 유저 - 경매 정보 간 연결  
 `goodId`: 상품 - 경매 정보 간 연결
   
+
 ex) `ownerId`  = `req.user.id` 
 **associated** 된 관계 간에는 데이터베이스의 행 생성 시 자동으로 관계가 갱신되지만, 그렇지 못한 상황이 발생.  
 
