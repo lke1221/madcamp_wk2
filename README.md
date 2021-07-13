@@ -1,4 +1,3 @@
-
 # RNAuction
 
 실시간 경매 시스템 
@@ -17,7 +16,7 @@
 (1) **회원가입 및 로그인** 할 수 있으며, 가진 돈을 설정할 수 있다.  
 (2) 내부 저장소와 카메라를 이용하여 **물건을 찍어 등록**할 수 있고, **이름과 가격을 설정**할 수 있다.  
 (3) 상품 목록을 선택하여 **경매 모델로 진입**할 수 있으며, **입찰가와 메시지**를 선택하여 베팅할 수 있다.  
-(4) **SSE(server-sent event)** 를 사용하여 경매 참여자의 **시간을 동기화**할 수 있고  
+(4) **SSE(server-sent event)**를 사용하여 경매 참여자의 **시간을 동기화**할 수 있고  
 (5) **Socket.io**를 이용하여 **실시간으로 입찰 정보**를 올릴 수 있다.  
 (6) **node-schedule**을 이용하여 **경매 시작 시간과 종료 시간**을 조율할 수 있고  
 (7) 낙찰 여부를 확정, 개인의 프로필에서 **낙찰 목록**을 열람할 수 있다. 
@@ -65,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
 ```
 
 ### Routes
-1. Auth
+1. Auth: 로그인 방식을 서술
 ```js 
 router.post('/login', (req, res, next) => {
     console.log("로그인 시도 중...")
@@ -202,7 +201,7 @@ app.use((_, res, next) => {
      ...
 ```
 ### AuthScreen.js  
-Login 버튼과 Signup 버튼이 번갈아서 보이는 부분의 코드이다.
+`Login` 버튼과 `Signup` 버튼이 번갈아서 보이는 부분의 코드이다.
 
 ```js
         fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
@@ -287,6 +286,9 @@ router.post('/img', upload.single('img'), (req, res) => {
 `userId` : 유저 - 경매 정보 간 연결  
 `goodId`: 상품 - 경매 정보 간 연결
   
+<img width="500" alt="Screen Shot 2021-07-13 at 11 50 06 PM" src="https://user-images.githubusercontent.com/46164736/125473829-bb95fcd2-c0d9-470f-a534-3bc2580bcb82.png">
+
+
 
 ex) `ownerId`  = `req.user.id` 
 **associated** 된 관계 간에는 데이터베이스의 행 생성 시 자동으로 관계가 갱신되지만, 그렇지 못한 상황이 발생.  
