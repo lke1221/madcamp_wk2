@@ -78,7 +78,6 @@ const AddAuction = (props) => {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                ownerId : AsyncStorage.getItem('user_num'),
                 name : pname,
                 price : price
             }),
@@ -134,7 +133,7 @@ const AddAuction = (props) => {
             </TouchableOpacity>
             <Button
                     title='back'
-                    onPress={() => props.navigation.goBack()}/>
+                    onPress={() => props.navigation.replace('HomeScreen')}/>
         </View>
     );
 
