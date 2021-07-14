@@ -64,7 +64,7 @@ module.exports = (sequelize, DataTypes) => {
 ```
 
 ### Routes
-1. Auth: 로그인 방식을 서술
+#### Auth: 로그인 방식을 서술
 ```js 
 router.post('/login', (req, res, next) => {
     console.log("로그인 시도 중...")
@@ -87,7 +87,7 @@ router.post('/login', (req, res, next) => {
 });
 
 ```
-2. index: **프런트엔드**의 스크린을 위해 지정된 경로 작성  
+#### index: **프런트엔드**의 스크린을 위해 지정된 경로 작성  
 
 `/goods` - **상품 모델**, 경매에 올릴 물건의 정보를 프런트로부터 받아 DB에 기록한다.
 ```js
